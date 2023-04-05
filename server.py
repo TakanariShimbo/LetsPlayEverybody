@@ -143,4 +143,4 @@ def on_reversi_put_stone(message):
 
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app)
