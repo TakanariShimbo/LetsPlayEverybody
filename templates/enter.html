@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title>Enter Room</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+  </head>
+  <body class="bg-gray-100">
+    <section class="container mx-auto px-4 py-16">
+      <a href="/" id="return_index" class="border border-indigo-500 text-indigo-500 py-1 px-3 rounded hover:bg-indigo-500 hover:text-white mb-4 inline-block">Return</a>
+      <div class="bg-white shadow-md rounded p-6">
+        <div class="text-center mb-6">
+          <h1 class="text-3xl mb-4">Enter Room</h1>
+          {% if rooms %}
+          <ul class="list-disc pl-5">
+            {% for room in rooms %}
+            <li><p>{{ room }}</p></li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p>No Room</p>
+          {% endif %}
+        </div>
+        <form id="enter_room_form" method="post">
+          <div class="mb-4">
+            <label for="room_name" class="block text-sm text-gray-600">Room Name</label>
+            <input type="text" id="room_name" name="room_name" placeholder="Room Name" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-2 px-3 leading-8 transition-colors duration-200 ease-in-out" style="line-height: 1.25;" required>
+          </div>
+          <button type="submit" class="bg-indigo-500 text-white py-2 px-3 rounded hover:bg-indigo-700 w-full">Enter</button>
+        </form>
+      </div>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>リバーシ</title>
+    <style>
+      body { 
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+        font-family: sans-serif;
+      }
+      canvas { 
+        display: block;
+        z-index: 0;
+      }
+      p {
+        position: absolute;
+        margin: 0;
+        padding: 10px;
+        background-color: rgba(255, 255, 255, 0.7);
+        border-radius: 5px;
+        z-index: 1;
+      }
+      #message {
+          top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <p id="message">Please wait a little.</p>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+      const room_name = "{{ room_name }}";
+      const this_player_color = "{{ this_player_color }}";
+      const initial_board = {{ board|tojson }};
+      const path_put_stone_sound = "{{ url_for('static', filename='reversi/put_stone_sound.mp3') }}"; 
+
+      const initialInnerWidth = window.innerWidth;
+      const initialInnerHeight = window.innerHeight;
+    </script>
+    <script src="{{ url_for('static', filename='reversi/helperFunctions.js') }}"></script>
+    <script src="{{ url_for('static', filename='reversi/threeFunctions.js') }}"></script>
+    <script src="{{ url_for('static', filename='reversi/initializeEvent.js') }}"></script>
+    <script src="{{ url_for('static', filename='reversi/socketEvent.js') }}"></script>
+  </body>
+</html>
