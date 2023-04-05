@@ -26,7 +26,7 @@ def index():
 def create():
     # Get
     if request.method == 'GET':
-        return render_template('create.html', rooms=room_user_manager.room_name_list)
+        return render_template('create.html')
 
     # Post
     # Early return
@@ -35,14 +35,13 @@ def create():
         return "この部屋名は既に使用されています。", 400
     
     game_name = request.form['game_name']
-    if game_name == "REVERSI":
-        return redirect(url_for('riversi', room_name=room_name))     
+    return redirect(url_for(game_name, room_name=room_name))     
     
 @app.route('/enter', methods=['GET', 'POST'])
 def enter():
     # Get
     if request.method == 'GET':
-        return render_template('enter.html', rooms=room_user_manager.room_name_list)
+        return render_template('enter.html', room_dict=room_user_manager.room_dict)
     
     # Post
     # Early return
@@ -55,8 +54,7 @@ def enter():
     if room.is_full():
         abort(403, "This room is full. Please try again later.")
 
-    if type(room) == ReversiRoom:
-        return redirect(url_for('riversi', room_name=room_name))       
+    return redirect(url_for(room.game_name, room_name=room_name))       
 
 @socketio.on('disconnect')
 def on_disconnect():
@@ -80,8 +78,8 @@ def on_disconnect():
 """
 リバーシ
 """
-@app.route('/riversi/<room_name>')
-def riversi(room_name):
+@app.route('/reversi/<room_name>')
+def reversi(room_name):
     if room_user_manager.is_exists_room(room_name):
         # If exists -> get room
         reversi_room = room_user_manager.get_room(room_name)
@@ -95,7 +93,7 @@ def riversi(room_name):
 
     # Render toom.html    
     player_color = reversi_room.get_empty_player_color()
-    return render_template('riversi.html', room_name=room_name, this_player_color=player_color.name, board=reversi_room.controller.current_board_str, enumerate=enumerate)
+    return render_template('reversi.html', room_name=room_name, this_player_color=player_color.name, board=reversi_room.controller.current_board_str, enumerate=enumerate)
 
 @socketio.on('reversi_join_room')
 def on_reversi_join_room(message):
@@ -143,4 +141,4 @@ def on_reversi_put_stone(message):
 
 
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(app, debug=True)

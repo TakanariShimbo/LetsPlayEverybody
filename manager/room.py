@@ -16,6 +16,11 @@ class Room(ABC):
     def players(self):
         return self.__players
 
+    @property
+    @abstractmethod
+    def game_name(self) -> str:
+        pass
+
     @abstractmethod
     def is_empty(self) -> bool:
         pass
@@ -33,6 +38,10 @@ class ReversiRoom(Room):
     @property
     def controller(self) -> ReversiController:
         return self.__controller
+
+    @property
+    def game_name(self) -> str:
+        return "reversi"
 
     def is_empty(self) -> bool:
         return len(self.players) == 0

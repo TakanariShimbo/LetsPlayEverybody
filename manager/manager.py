@@ -38,6 +38,13 @@ class RoomUserManager:
     def room_name_list(self):
         return list(self.__room_dict.keys())
 
+    @property
+    def room_dict(self):
+        _room_dict = {}
+        for name, room in self.__room_dict.items():
+            _room_dict[name] = room.game_name
+        return _room_dict
+    
     def is_exists_room(self, room_name: str) -> bool:
         if room_name in self.room_name_list:
             return True
