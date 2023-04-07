@@ -1,4 +1,4 @@
-# Folder Structure
+## Folder Structure
 
     root/
     ├── logic/
@@ -23,7 +23,7 @@
     ├── glitch.json           (Configuration file for Glitch)
     └── readme.md             (Project documentation)
 
-# How to Use
+## How to Use
 
 On [Glitch](https://glitch.com/), import from Github by pasting the link below
 https://github.com/TakanariShimbo/LetsPlayEverybody.git

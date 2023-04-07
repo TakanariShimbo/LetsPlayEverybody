@@ -1,4 +1,4 @@
-# フォルダ構成
+## フォルダ構成
 
     root/   
     ├── logic/   
@@ -24,7 +24,7 @@
     └── readme.md         （プロジェクトの説明書）   
 
 
-# 使用方法
+## 使用方法
 
 [Glitch](https://glitch.com/) で Github から Import で以下リンクを張り付ける
 https://github.com/TakanariShimbo/LetsPlayEverybody.git

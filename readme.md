@@ -1,4 +1,4 @@
-# Let's Play Everybody
+## Let's Play Everybody
 
 Choose your language:
 
