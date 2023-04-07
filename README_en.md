@@ -1,7 +1,5 @@
 # Folder Structure
 
-# Folder Structure
-
     root/
     ├── logic/
     │   └── reversi/
