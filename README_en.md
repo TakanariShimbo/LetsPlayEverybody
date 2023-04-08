@@ -1,4 +1,9 @@
-## Folder Structure
+## Overview
+Let's Play Everybody is a website where you can play various board games with your friends.   
+It is a web application, so you can access it from various platforms such as computers, smartphones, and tablets regardless of the operating system.   
+This repository is the source code for the website.   
+
+## Directory Structure
 
     root/
     ├── logic/
@@ -23,7 +28,7 @@
     ├── glitch.json           (Configuration file for Glitch)
     └── readme.md             (Project documentation)
 
-## How to Use
+## Deployment
 
 On [Glitch](https://glitch.com/), import from Github by pasting the link below   
 https://github.com/TakanariShimbo/LetsPlayEverybody.git

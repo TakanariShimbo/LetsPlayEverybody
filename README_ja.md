@@ -1,4 +1,9 @@
-## フォルダ構成
+## 概要
+Let's Play Everybody は、友達と様々な種類のボードゲームを遊ぶことができるサイトです。   
+Webアプリなので、OSに関わらず、パソコン・スマホ・タブレット等の様々なプラットフォームからアクセスすることができます。   
+このリポジトリは、そのソースです。   
+
+## ディレクトリ構成
 
     root/
     ├── logic/
@@ -23,7 +28,7 @@
     ├── glitch.json       （Glitchでの設定ファイル）
     └── readme.md         （プロジェクトの説明書）
 
-## 使用方法
+## デプロイ
 
 [Glitch](https://glitch.com/) で Github から Import で以下リンクを張り付ける   
-https://github.com/TakanariShimbo/LetsPlayEverybody.git
+https://github.com/TakanariShimbo/LetsPlayEverybody.git   
