@@ -31,7 +31,7 @@ socket.on("reversi_game_start", function (data) {
 
 socket.on("reversi_left_room", function (data) {
   const leftPlayerColor = data.player_color;
-  const message = "Player " + leftPlayerColor + " has left the room.";
+  const message = "Friend (" + leftPlayerColor + " player) has left the room.";
   updateMessage(message);
 });
 
@@ -77,14 +77,14 @@ function gameFinishEvent(black_stone_count, white_stone_count) {
     if (this_player_color == "BLACK") {
       result_message = "YOU(BLACK) WIN";
     } else {
-      result_message = "ENEMY(BLACK) WIN";
+      result_message = "FRIEND(BLACK) WIN";
     }
   } else if (black_stone_count < white_stone_count) {
     wait_count = white_stone_count;
     if (this_player_color == "WHITE") {
       result_message = "YOU(WHITE) WIN";
     } else {
-      result_message = "ENEMY(WHITE) WIN";
+      result_message = "FRIEND(WHITE) WIN";
     }
   } else {
     result_message = "DRAW";
