@@ -25,5 +25,5 @@
 
 ## How to Use
 
-On [Glitch](https://glitch.com/), import from Github by pasting the link below
+On [Glitch](https://glitch.com/), import from Github by pasting the link below   
 https://github.com/TakanariShimbo/LetsPlayEverybody.git

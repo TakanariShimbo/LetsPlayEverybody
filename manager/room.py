@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from logic.reversi.controller import ReversiPlayer, ReversiController
-    
+
 
 class Room(ABC):
     def __init__(self, room_name: str) -> None:
@@ -48,7 +48,7 @@ class ReversiRoom(Room):
 
     def is_full(self) -> bool:
         return len(self.players) == 2
-    
+
     def add_player(self, player_color: ReversiPlayer, session_id: str) -> None:
         self.players[player_color] = session_id
 
@@ -56,4 +56,6 @@ class ReversiRoom(Room):
         del self.players[player_color]
 
     def get_empty_player_color(self) -> ReversiPlayer:
-        return ({ReversiPlayer.BLACK, ReversiPlayer.WHITE} - set(self.players.keys())).pop()
+        return (
+            {ReversiPlayer.BLACK, ReversiPlayer.WHITE} - set(self.players.keys())
+        ).pop()

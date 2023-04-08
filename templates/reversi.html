@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ja">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reversi</title>
     <style>
-      body { 
+      body {
         margin: 0;
         display: flex;
         justify-content: center;
@@ -14,7 +14,7 @@
         background-color: #f0f0f0;
         font-family: sans-serif;
       }
-      canvas { 
+      canvas {
         display: block;
         z-index: 0;
       }
@@ -27,7 +27,7 @@
         z-index: 1;
       }
       #message {
-          top: 10px;
+        top: 10px;
       }
     </style>
   </head>
@@ -35,13 +35,21 @@
     <p id="message">Please wait a little.</p>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+      integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
     <script>
       const room_name = "{{ room_name }}";
       const this_player_color = "{{ this_player_color }}";
       const initial_board = {{ board|tojson }};
-      const path_put_stone_sound = "{{ url_for('static', filename='reversi/put_stone_sound.mp3') }}"; 
+      const path_put_stone_sound = "{{ url_for('static', filename='reversi/put_stone_sound.mp3') }}";
 
       const initialInnerWidth = window.innerWidth;
       const initialInnerHeight = window.innerHeight;

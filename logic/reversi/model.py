@@ -4,7 +4,6 @@ from logic.reversi.state import ReversiState
 
 
 class ReversiModel:
-
     def __init__(self):
         """
         初期化
@@ -35,36 +34,29 @@ class ReversiModel:
         current_player_color = self.__current_player_color
         self.__search_candidates(current_player_color)
 
-
     @property
     def current_board(self):
         return self.__board
-    
-    
+
     @property
     def current_player_color(self):
         return self.__current_player_color
-    
-    
+
     @property
     def previous_i_put(self):
         return self.__previous_i_put
-    
-    
+
     @property
     def previous_i_flips(self):
         return self.__previous_i_flips
-    
-    
+
     @property
     def previous_i_candidates(self):
         return self.__previous_i_candidates
-    
 
     @property
     def current_state(self):
         return self.__current_state
-
 
     def can_put(self, i_board: int) -> bool:
         """
@@ -75,8 +67,7 @@ class ReversiModel:
         if self.__board[i_board] == ReversiStone.CANDIDATE:
             return True
         else:
-            return False    
-
+            return False
 
     def put(self, i_board: int) -> None:
         """
@@ -94,7 +85,7 @@ class ReversiModel:
         if is_find_candidate:
             self.__current_player_color = next_player_color
             return
-        
+
         # 候補が見つからなかったので、反対の色のターンはスキップされ、同じプレイヤーの候補を再検索する
         is_find_candidate = self.__search_candidates(current_player_color)
 
@@ -102,12 +93,11 @@ class ReversiModel:
         if is_find_candidate:
             self.__current_player_color = current_player_color
             return
-        
+
         # どちらの色の候補も見つからなかったのでゲーム終了
         self.__current_state = ReversiState.FINISHED
         return
-        
-                
+
     def __flip_stones(self, i_board: int, player_color: ReversiPlayer) -> None:
         """
         盤面の i_board に player_color の石を置き、敵のプレイヤーの石をひっくり返す
@@ -121,8 +111,13 @@ class ReversiModel:
 
         # 方向パラメータ
         UP, DOWN, LEFT, RIGHT = -10, 10, -1, 1
-        RIGHT_UP, RIGHT_DOWN, LEFT_UP, LEFT_DOWN = RIGHT+UP, RIGHT+DOWN, LEFT+UP, LEFT+DOWN
-        
+        RIGHT_UP, RIGHT_DOWN, LEFT_UP, LEFT_DOWN = (
+            RIGHT + UP,
+            RIGHT + DOWN,
+            LEFT + UP,
+            LEFT + DOWN,
+        )
+
         # 8方向を走査
         for i_unit in (RIGHT, RIGHT_UP, UP, LEFT_UP, LEFT, LEFT_DOWN, DOWN, RIGHT_DOWN):
             # ひっくり返す候補
@@ -137,7 +132,7 @@ class ReversiModel:
             while self.__board[i_check].name == enemy_player_color.name:
                 i_flips_temp.append(i_check)
                 i_check += i_unit
-            
+
             # 敵の石のあとが自分の石なら置けることが確定
             if self.__board[i_check].name == player_color.name:
                 i_flips += i_flips_temp
@@ -148,9 +143,10 @@ class ReversiModel:
             self.__board[i_flip] = getattr(ReversiStone, player_color.name)
         self.__previous_i_put = i_board
         self.__previous_i_flips = i_flips
-        
 
-    def __get_reverse_player_color(self, current_player_color: ReversiPlayer) -> ReversiPlayer:
+    def __get_reverse_player_color(
+        self, current_player_color: ReversiPlayer
+    ) -> ReversiPlayer:
         """
         現在のプレイヤーと反対のプレイヤーを取得
         """
@@ -158,7 +154,6 @@ class ReversiModel:
             return ReversiPlayer.WHITE
         else:
             return ReversiPlayer.BLACK
-            
 
     def __search_candidates(self, next_player_color: ReversiPlayer) -> bool:
         """
@@ -185,7 +180,6 @@ class ReversiModel:
             return True
         else:
             return False
-        
 
     def __is_candidate(self, i_board: int, player_color: ReversiPlayer) -> bool:
         """
@@ -202,8 +196,13 @@ class ReversiModel:
 
         # 方向パラメータ
         UP, DOWN, LEFT, RIGHT = -10, 10, -1, 1
-        RIGHT_UP, RIGHT_DOWN, LEFT_UP, LEFT_DOWN = RIGHT+UP, RIGHT+DOWN, LEFT+UP, LEFT+DOWN
-        
+        RIGHT_UP, RIGHT_DOWN, LEFT_UP, LEFT_DOWN = (
+            RIGHT + UP,
+            RIGHT + DOWN,
+            LEFT + UP,
+            LEFT + DOWN,
+        )
+
         # 8方向を走査
         for i_unit in (RIGHT, RIGHT_UP, UP, LEFT_UP, LEFT, LEFT_DOWN, DOWN, RIGHT_DOWN):
             # 置いた石の隣が敵の石でなければ次へ
@@ -214,10 +213,10 @@ class ReversiModel:
             # 敵の石である限り、unit方向に進み続ける
             while self.__board[i_check].name == enemy_player_color.name:
                 i_check += i_unit
-            
+
             # 敵の石のあとが自分の石なら置けることが確定
             if self.__board[i_check].name == player_color.name:
                 return True
-            
+
         # 全方向探索してもひっくり返せる石が見つからなければ置けないことが確定
         return False
