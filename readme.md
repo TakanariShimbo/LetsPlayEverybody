@@ -2,5 +2,5 @@
 
 Choose your language:
 
-- [English](./README_en.md)
-- [日本語](./README_ja.md)
+- [English](.readme/README_en.md)
+- [日本語](.readme/README_ja.md)
