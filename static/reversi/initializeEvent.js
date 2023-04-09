@@ -1,9 +1,13 @@
 
+
+let global_board = initial_board;
+let is_updating = false;
+
+// Prepare Static instance
 const putStoneAudio = new Howl({
   src: [path_put_stone_sound],
 });
 
-// Prepare Static instance
 const scene = generateScene();
 
 const camera = generateCamera();
@@ -31,7 +35,7 @@ for (let i = 0; i < 8; i++) {
 }
 
 // threeFunction
-async function updateStoneMesh(x, y, stoneKind, is_play_sound) {
+function updateStoneMesh(x, y, stoneKind, is_play_sound) {
   // Remove current stoneMaterial
   if (stoneMeshs[x][y] != null) {
     scene.remove(stoneMeshs[x][y]);
@@ -61,7 +65,7 @@ function updateStoneMeshByBoard(x, y, board, is_play_sound) {
 // Initialize
 for (let i = 0; i < 8; i++) {
   for (let j = 0; j < 8; j++) {
-    updateStoneMesh(i, j, initial_board[i][j], false);
+    updateStoneMeshByBoard(i, j, initial_board, false);
   }
 }
 

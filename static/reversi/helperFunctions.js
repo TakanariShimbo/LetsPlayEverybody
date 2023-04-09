@@ -27,3 +27,10 @@ function getFovByAspect(aspect) {
     minFov;
   return Math.max(maxFov, Math.min(minFov, fov));
 }
+
+
+// play Audio
+function playAudio(audio) {
+  audio.stop();
+  audio.play();
+}

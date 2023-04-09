@@ -37,7 +37,7 @@ def create():
     # Early return
     room_name = request.form["room_name"]
     if room_user_manager.is_exists_room(room_name):
-        return "この部屋名は既に使用されています。", 400
+        abort(400, f"{room_name} is already used.")
 
     game_name = request.form["game_name"]
     return redirect(url_for(game_name, room_name=room_name))
@@ -53,14 +53,14 @@ def enter():
     # Early return
     room_name = request.form["room_name"]
     if not room_user_manager.is_exists_room(room_name):
-        return "この部屋は存在しません。", 400
+        abort(400, f"{room_name} is not exists.")
 
     room = room_user_manager.get_room(room_name)
     if room is None:
-        return "この部屋は存在しません。", 400
+        abort(403, f"{room_name} is not exists.")
 
     if room.is_full():
-        abort(403, "This room is full. Please try again later.")
+        abort(400, f"{room_name} is full. Please try again later.")
 
     return redirect(url_for(room.game_name, room_name=room_name))
 
@@ -108,7 +108,7 @@ def reversi(room_name):
         # If exists -> get room
         room = room_user_manager.get_room(room_name)
         if room is None:
-            abort(400, "この部屋は存在しません。")
+            abort(400, f"{room_name} is not exists.")
         reversi_room = cast(ReversiRoom, room)
     else:
         # If not exists -> create room
@@ -116,7 +116,7 @@ def reversi(room_name):
 
     # Early return
     if reversi_room.is_full():
-        abort(403, "This room is full. Please try again later.")
+        abort(400, f"{room_name} is full. Please try again later.")
 
     # Render toom.html
     player_color = reversi_room.get_empty_player_color()
@@ -159,10 +159,10 @@ def on_reversi_put_stone(message):
     # Early return
     user = room_user_manager.get_user(session_id)
     if user is None:
-        abort(403, "This room is full. Please try again later.")
+        abort(403, "Error happened. User not found.")
     room = room_user_manager.get_room(user.room_name)
     if room is None:
-        abort(403, "This room is full. Please try again later.")
+        abort(403, "Error happened. Room not found.")
     reversi_room = cast(ReversiRoom, room)
     reversi_user = cast(ReversiUser, user)
 

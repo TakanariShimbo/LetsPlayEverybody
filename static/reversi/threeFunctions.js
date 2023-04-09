@@ -122,13 +122,8 @@ function generateStone(x, y, stoneKind) {
   return stoneMesh;
 }
 
-// Add Click and Touch Event
-function playAudio(audio) {
-  audio.stop();
-  audio.play();
-}
-
-function onMouseDownAndTouchStartEvent(clientX, clientY, socket) {
+// For Click and Touch Event
+function findIntersects(clientX, clientY) {
   const mouse = new THREE.Vector2();
   mouse.x = (clientX / window.innerWidth) * 2 - 1;
   mouse.y = -(clientY / window.innerHeight) * 2 + 1;
@@ -137,15 +132,12 @@ function onMouseDownAndTouchStartEvent(clientX, clientY, socket) {
   raycaster.setFromCamera(mouse, camera);
 
   const intersects = raycaster.intersectObjects(scene.children);
-  if (intersects.length == 0) {
-    return;
-  }
+  return intersects;
+}
 
+function calculatePutXY(intersects) {
   const intersect = intersects[0];
   const x = Math.round((intersect.point.x + 14) / 4);
   const y = Math.round((intersect.point.z + 14) / 4);
-
-  if (x >= 0 && x < 8 && y >= 0 && y < 8) {
-    socket.emit("reversi_put_stone", { x: x, y: y });
-  }
+  return [x, y];
 }

@@ -4,13 +4,32 @@ const socket = io();
 
 // Prepare Event Listener
 function onMouseDownEvent(event) {
-  onMouseDownAndTouchStartEvent(event.clientX, event.clientY, socket);
+  const intersects = findIntersects(event.clientX, event.clientY);
+  if (intersects.length == 0) {
+    return;
+  }
+  const [x, y] = calculatePutXY(intersects);
+  if (x < 0 || x >= 8 || y < 0 || y >= 8 || (global_board[x][y] != "CANDIDATE") || is_updating) {
+    return;
+  }
+
+  socket.emit("reversi_put_stone", { x: x, y: y });
 }
 window.addEventListener("mousedown", onMouseDownEvent, false);
 
 function onTouchStartEvent(event) {
   const touch = event.touches[0] || event.changedTouches[0];
-  onMouseDownAndTouchStartEvent(touch.clientX, touch.clientY, socket);
+  const intersects = findIntersects(touch.clientX, touch.clientY);
+  if (intersects.length == 0) {
+    return;
+  }
+  
+  const [x, y] = calculatePutXY(intersects);
+  if (x < 0 || x >= 8 || y < 0 || y >= 8) {
+    return;
+  }
+
+  socket.emit("reversi_put_stone", { x: x, y: y });
 }
 window.addEventListener("touchstart", onTouchStartEvent, false);
 
@@ -96,6 +115,8 @@ function gameFinishEvent(black_stone_count, white_stone_count) {
 }
 
 socket.on("reversi_update_board", function (data) {
+  is_updating = true;
+
   const next_board = data.next_board;
   const current_board = data.current_board;
   const xy_put = data.xy_put;
@@ -140,4 +161,7 @@ socket.on("reversi_update_board", function (data) {
       updateMessageByPlayerColor(next_player_color);
     }
   }, 150 * xy_flips.length);
+
+  global_board = next_board;
+  is_updating = false;
 });
