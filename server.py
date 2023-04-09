@@ -57,7 +57,7 @@ def enter():
 
     room = room_user_manager.get_room(room_name)
     if room is None:
-        abort(403, f"{room_name} is not exists.")
+        abort(403, f"Error happened. Room({room_name}) not found.")
 
     if room.is_full():
         abort(400, f"{room_name} is full. Please try again later.")
@@ -108,7 +108,7 @@ def reversi(room_name):
         # If exists -> get room
         room = room_user_manager.get_room(room_name)
         if room is None:
-            abort(400, f"{room_name} is not exists.")
+            abort(403, f"Error happened. Room({room_name}) not found.")
         reversi_room = cast(ReversiRoom, room)
     else:
         # If not exists -> create room
@@ -159,13 +159,12 @@ def on_reversi_put_stone(message):
     # Early return
     user = room_user_manager.get_user(session_id)
     if user is None:
-        abort(403, "Error happened. User not found.")
+        abort(403, f"Error happened. User({session_id}) not found.")
     room = room_user_manager.get_room(user.room_name)
     if room is None:
-        abort(403, "Error happened. Room not found.")
+        abort(403, f"Error happened. Room({user.room_name}) not found.")
     reversi_room = cast(ReversiRoom, room)
     reversi_user = cast(ReversiUser, user)
-
     if not reversi_room.is_full():
         return
     if reversi_user.player_color != reversi_room.controller.current_player_color:
