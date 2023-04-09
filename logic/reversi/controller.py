@@ -1,4 +1,6 @@
-from logic.reversi.model import ReversiStone, ReversiPlayer, ReversiState, ReversiModel
+from typing import List, Tuple
+
+from logic.reversi.model import ReversiStone, ReversiPlayer, ReversiModel
 
 
 class ReversiController:
@@ -6,8 +8,8 @@ class ReversiController:
         """
         初期化
         """
-        self.__model = ReversiModel()
-        self.__previous_board = self.__model.current_board.copy()
+        self.__model: ReversiModel = ReversiModel()
+        self.__previous_board: List[ReversiStone] = self.__model.current_board.copy()
 
     def can_put(self, x: int, y: int) -> bool:
         """
@@ -28,7 +30,7 @@ class ReversiController:
         self.__model.put(10 * y + x)
 
     @property
-    def current_board_str(self):
+    def current_board_str(self) -> Tuple[Tuple[str, ...], ...]:
         """
         盤面を返す
         盤面には[x][y]でアクセスする
@@ -38,7 +40,7 @@ class ReversiController:
         return tuple(zip(*bd))
 
     @property
-    def previous_board_str(self):
+    def previous_board_str(self) -> Tuple[Tuple[str, ...], ...]:
         """
         一手前の盤面を返す
         盤面には[x][y]でアクセスする
@@ -51,7 +53,7 @@ class ReversiController:
         return tuple(zip(*bd))
 
     @property
-    def previous_xy_put(self):
+    def previous_xy_put(self) -> List[int]:
         """
         石を置いた座標を返す
         """
@@ -60,7 +62,7 @@ class ReversiController:
         return [x - 1, y - 1]
 
     @property
-    def previous_xy_flips(self):
+    def previous_xy_flips(self) -> List[List[int]]:
         """
         ひっくり返す石群の座標を返す
         """
@@ -72,7 +74,7 @@ class ReversiController:
         return xy_flips
 
     @property
-    def previous_xy_candidates(self):
+    def previous_xy_candidates(self) -> List[List[int]]:
         """
         候補の石群の座標を返す
         """
@@ -112,7 +114,7 @@ class ReversiController:
         return self.__model.current_board.count(ReversiStone.WHITE)
 
     @property
-    def current_state_str(self) -> ReversiState:
+    def current_state_str(self) -> str:
         """
         現在の状態
         """

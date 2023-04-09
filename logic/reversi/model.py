@@ -1,3 +1,5 @@
+from typing import List
+
 from logic.reversi.stone import ReversiStone
 from logic.reversi.player import ReversiPlayer
 from logic.reversi.state import ReversiState
@@ -8,14 +10,13 @@ class ReversiModel:
         """
         初期化
         """
-        self.__current_player_color = ReversiPlayer.BLACK
-        self.__current_state = ReversiState.PLAYING
-        self.__previous_i_put = None
-        self.__previous_i_flips = []
-        self.__previous_i_candidates = []
-
-        # 空の盤面を作成
-        self.__board = [ReversiStone.EMPTY] * 100
+        # 変数初期化
+        self.__current_player_color: ReversiPlayer = ReversiPlayer.BLACK
+        self.__current_state: ReversiState = ReversiState.PLAYING
+        self.__previous_i_put: int = 0
+        self.__previous_i_flips: List[int] = []
+        self.__previous_i_candidates: List[int] = []
+        self.__board: List[ReversiStone] = [ReversiStone.EMPTY] * 100
 
         # 初期の石を配置
         self.__board[44] = ReversiStone.WHITE
@@ -35,27 +36,27 @@ class ReversiModel:
         self.__search_candidates(current_player_color)
 
     @property
-    def current_board(self):
+    def current_board(self) -> List[ReversiStone]:
         return self.__board
 
     @property
-    def current_player_color(self):
+    def current_player_color(self) -> ReversiPlayer:
         return self.__current_player_color
 
     @property
-    def previous_i_put(self):
+    def previous_i_put(self) -> int:
         return self.__previous_i_put
 
     @property
-    def previous_i_flips(self):
+    def previous_i_flips(self) -> List[int]:
         return self.__previous_i_flips
 
     @property
-    def previous_i_candidates(self):
+    def previous_i_candidates(self) -> List[int]:
         return self.__previous_i_candidates
 
     @property
-    def current_state(self):
+    def current_state(self) -> ReversiState:
         return self.__current_state
 
     def can_put(self, i_board: int) -> bool:

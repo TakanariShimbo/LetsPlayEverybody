@@ -1,9 +1,11 @@
 import os
+from typing import cast
+
 from flask import Flask, render_template, request, redirect, url_for, abort
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from dotenv import load_dotenv
 
-from manager.manager import ReversiRoom, RoomUserManager
+from manager.manager import ReversiRoom, ReversiUser, RoomUserManager
 
 
 load_dotenv()
@@ -53,8 +55,10 @@ def enter():
     if not room_user_manager.is_exists_room(room_name):
         return "この部屋は存在しません。", 400
 
-    # Early return
     room = room_user_manager.get_room(room_name)
+    if room is None:
+        return "この部屋は存在しません。", 400
+
     if room.is_full():
         abort(403, "This room is full. Please try again later.")
 
@@ -63,23 +67,32 @@ def enter():
 
 @socketio.on("disconnect")
 def on_disconnect():
-    session_id = request.sid
+    session_id = request.sid  # type: ignore
+
+    # Early return
+    user = room_user_manager.get_user(session_id)
+    if user is None:
+        return
 
     # Leave room
-    user = room_user_manager.get_user(session_id)
     room_user_manager.remove_user(session_id)
     leave_room(user.room_name)
 
-    # Emit leave room event
+    # Early return
     room = room_user_manager.get_room(user.room_name)
+    if room is None:
+        return
+
+    # Emit leave room event
     if type(room) == ReversiRoom:
+        reversi_user = cast(ReversiUser, user)
         emit(
             "reversi_left_room",
-            {"player_color": user.player_color.name},
+            {"player_color": reversi_user.player_color.name},
             room=user.room_name,
         )
 
-    # if empty, delete room
+    # If empty, delete room
     if room.is_empty():
         room_user_manager.remove_room(room.room_name)
 
@@ -93,7 +106,10 @@ def on_disconnect():
 def reversi(room_name):
     if room_user_manager.is_exists_room(room_name):
         # If exists -> get room
-        reversi_room = room_user_manager.get_room(room_name)
+        room = room_user_manager.get_room(room_name)
+        if room is None:
+            abort(400, "この部屋は存在しません。")
+        reversi_room = cast(ReversiRoom, room)
     else:
         # If not exists -> create room
         reversi_room = room_user_manager.create_reversi_room(room_name)
@@ -115,7 +131,7 @@ def reversi(room_name):
 
 @socketio.on("reversi_join_room")
 def on_reversi_join_room(message):
-    session_id = request.sid
+    session_id = request.sid  # type: ignore
     room_name = message["room_name"]
     player_color = message["player_color"]
 
@@ -127,43 +143,51 @@ def on_reversi_join_room(message):
 
     # Game start
     room = room_user_manager.get_room(room_name)
-    if room.is_full():
+    if room is not None and room.is_full():
+        reversi_room = cast(ReversiRoom, room)
         emit(
             "reversi_game_start",
-            {"next_player_color": room.controller.current_player_color_str},
+            {"next_player_color": reversi_room.controller.current_player_color_str},
             room=room_name,
         )
 
 
 @socketio.on("reversi_put_stone")
 def on_reversi_put_stone(message):
-    session_id = request.sid
+    session_id = request.sid  # type: ignore
 
     # Early return
     user = room_user_manager.get_user(session_id)
+    if user is None:
+        abort(403, "This room is full. Please try again later.")
     room = room_user_manager.get_room(user.room_name)
-    if not room.is_full():
+    if room is None:
+        abort(403, "This room is full. Please try again later.")
+    reversi_room = cast(ReversiRoom, room)
+    reversi_user = cast(ReversiUser, user)
+
+    if not reversi_room.is_full():
         return
-    if user.player_color != room.controller.current_player_color:
+    if reversi_user.player_color != reversi_room.controller.current_player_color:
         return
 
     # Update board
     x = int(message["x"])
     y = int(message["y"])
-    if room.controller.can_put(x, y):
-        room.controller.put(x, y)
+    if reversi_room.controller.can_put(x, y):
+        reversi_room.controller.put(x, y)
         emit(
             "reversi_update_board",
             {
-                "next_board": room.controller.current_board_str,
-                "current_board": room.controller.previous_board_str,
-                "xy_put": room.controller.previous_xy_put,
-                "xy_flips": room.controller.previous_xy_flips,
-                "xy_candidates": room.controller.previous_xy_candidates,
-                "next_player_color": room.controller.current_player_color_str,
-                "black_stone_count": room.controller.black_stone_count,
-                "white_stone_count": room.controller.white_stone_count,
-                "next_state": room.controller.current_state_str,
+                "next_board": reversi_room.controller.current_board_str,
+                "current_board": reversi_room.controller.previous_board_str,
+                "xy_put": reversi_room.controller.previous_xy_put,
+                "xy_flips": reversi_room.controller.previous_xy_flips,
+                "xy_candidates": reversi_room.controller.previous_xy_candidates,
+                "next_player_color": reversi_room.controller.current_player_color_str,
+                "black_stone_count": reversi_room.controller.black_stone_count,
+                "white_stone_count": reversi_room.controller.white_stone_count,
+                "next_state": reversi_room.controller.current_state_str,
             },
             room=room.room_name,
         )

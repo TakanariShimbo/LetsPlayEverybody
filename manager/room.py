@@ -1,19 +1,21 @@
 from abc import ABC, abstractmethod
+from typing import Dict, TypeVar, Generic
 
 from logic.reversi.controller import ReversiPlayer, ReversiController
 
 
-class Room(ABC):
+Player = TypeVar("Player")
+class Room(ABC, Generic[Player]):
     def __init__(self, room_name: str) -> None:
         self.__room_name = room_name
-        self.__players = {}
+        self.__players: Dict[Player, str] = {}
 
     @property
     def room_name(self) -> str:
         return self.__room_name
 
     @property
-    def players(self):
+    def players(self) -> Dict[Player, str]:
         return self.__players
 
     @property
@@ -30,7 +32,7 @@ class Room(ABC):
         pass
 
 
-class ReversiRoom(Room):
+class ReversiRoom(Room[ReversiPlayer]):
     def __init__(self, room_name: str) -> None:
         super().__init__(room_name)
         self.__controller = ReversiController()
