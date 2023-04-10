@@ -46,13 +46,12 @@
       crossorigin="anonymous"
     ></script>
     <script>
-      const room_name = "{{ room_name }}";
-      const this_player_color = "{{ this_player_color }}";
-      const initial_board = {{ board|tojson }};
-      const path_put_stone_sound = "{{ url_for('static', filename='reversi/put_stone_sound.mp3') }}";
-
-      const initialInnerWidth = window.innerWidth;
-      const initialInnerHeight = window.innerHeight;
+      const room_name = "{{ room_name }}";                                                              // string
+      const this_player_color = "{{ this_player_color }}";                                              // string
+      const initial_board = {{ board|tojson }};                                                         // string[][]
+      const path_put_stone_sound = "{{ url_for('static', filename='reversi/put_stone_sound.mp3') }}";   // string
+      const initialInnerWidth = window.innerWidth;                                                      // number
+      const initialInnerHeight = window.innerHeight;                                                    // number
     </script>
     <script src="{{ url_for('static', filename='reversi/helperFunctions.js') }}"></script>
     <script src="{{ url_for('static', filename='reversi/threeFunctions.js') }}"></script>
